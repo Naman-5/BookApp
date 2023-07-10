@@ -40,4 +40,10 @@ router.route('/addBook').post((req,res)=>{
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/:id').get((req, res) => {
+    bookData.findById(req.params.id)
+      .then(book => res.json(book))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
 module.exports = router;

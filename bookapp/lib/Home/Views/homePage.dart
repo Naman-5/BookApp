@@ -1,4 +1,5 @@
 import 'package:bookapp/Home/Controllers/homeController.dart';
+import 'package:bookapp/Home/Views/bookDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bookapp/common/styles.dart';
@@ -26,11 +27,10 @@ class HomePageState extends State<HomePage> {
         : Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
-                child: Column(children: [
-                  HorizontalBookListing(rowIndex: 0),
-                  HorizontalBookListing(rowIndex: 1),
-                  HorizontalBookListing(rowIndex: 0)
-                ]),
+                child: Column(
+                    children: List.generate(
+                        controller.data.value.data?.books?.length ?? 0,
+                        (index) => HorizontalBookListing(rowIndex: index))),
               ),
             ),
           ));
@@ -66,49 +66,62 @@ class HorizontalBookListing extends StatelessWidget {
                             .bookList
                             ?.length ??
                         0,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[800],
-                                border: Border.all(color: Colors.white),
-                                borderRadius: BorderRadius.circular(10)),
+                    (index) => GestureDetector(
+                          onTap: () {
+                            // rdirect to book details
+                            Get.to(BookDetailsPage(
+                                id: controller.data.value.data?.books
+                                        ?.elementAt(rowIndex)
+                                        .bookList
+                                        ?.elementAt(index)
+                                        .sId ??
+                                    ''));
+                          },
+                          child: Padding(
                             padding: const EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  controller.data.value.data?.books
-                                          ?.elementAt(rowIndex)
-                                          .bookList
-                                          ?.elementAt(index)
-                                          .coverImage ??
-                                      '',
-                                  height:
-                                      MediaQuery.of(context).size.height / 3,
-                                  width: MediaQuery.of(context).size.width / 2,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Flexible(
-                                  child: Text(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[800],
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10)),
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Image.network(
                                     controller.data.value.data?.books
                                             ?.elementAt(rowIndex)
                                             .bookList
                                             ?.elementAt(index)
-                                            .title ??
+                                            .coverImage ??
                                         '',
-                                    overflow: TextOverflow.ellipsis,
+                                    height:
+                                        MediaQuery.of(context).size.height / 3,
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
                                   ),
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    "\$${controller.data.value.data?.books?.elementAt(rowIndex).bookList?.elementAt(index).price.toString() ?? ''}",
-                                    overflow: TextOverflow.ellipsis,
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                                ),
-                              ],
+                                  Flexible(
+                                    child: Text(
+                                      controller.data.value.data?.books
+                                              ?.elementAt(rowIndex)
+                                              .bookList
+                                              ?.elementAt(index)
+                                              .title ??
+                                          '',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "\$${controller.data.value.data?.books?.elementAt(rowIndex).bookList?.elementAt(index).price.toString() ?? ''}",
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         )),
