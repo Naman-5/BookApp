@@ -4,7 +4,6 @@ let bookData = require("../models/book.model");
 require("dotenv").config();
 
 router.route("/").get(async (req, res) => {
-  // console.log(process.env.CLIENT_SECRET);
   let controller = new HomeController();
   try {
     res.json({
@@ -13,15 +12,15 @@ router.route("/").get(async (req, res) => {
         Books: [
           {
             header: "Top Sellers",
-            books: await controller.getTopSellers(),
+            bookList: await controller.getTopSellers(),
           },
           {
             header: "New Releases",
-            books: await controller.getNewReleases(),
+            bookList: await controller.getNewReleases(),
           },
           {
             header: "Sci-Fi & Fantacy",
-            books: await controller.getSciFi()
+            bookList: await controller.getSciFi()
           }
         ],
       },
