@@ -9,3 +9,9 @@ Home            |  All Books
 Book Details            |  Book Details 
 :-------------------------:|:-------------------------:
 ![AppHome](screenshots/bookDetails1.png)  | ![All Books](screenshots/bookDetails2.png)
+
+## API Curl
+
+```
+
+```
