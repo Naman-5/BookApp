@@ -8,6 +8,7 @@ class HomePageController extends GetxController {
   Rx<HomeDataModel> data = HomeDataModel().obs;
   Rx<bool> bookDetailsLoaded = false.obs;
   Rx<BookList> bookDetails = BookList().obs;
+  Rx<int> selectedBottomNavIndex = 0.obs;
 
   Future<void> homePageApi() async {
     dataLoaded.value = false;
@@ -31,7 +32,6 @@ class HomePageController extends GetxController {
         onSuccess: (res) {
           bookDetails.value = BookList.fromJson(res.data);
           bookDetailsLoaded.value = true;
-          print(bookDetails.value.title);
         });
   }
 }

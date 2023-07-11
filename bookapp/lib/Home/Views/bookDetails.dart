@@ -1,7 +1,7 @@
 import 'package:bookapp/Home/Controllers/homeController.dart';
+import 'package:bookapp/Home/Views/reader.dart';
 import 'package:bookapp/common/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class BookDetailsPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class BookDetailsPageState extends State<BookDetailsPage> {
             appBar: AppBar(
               title: Text(
                 controller.bookDetails.value.title ?? '',
-                style: h1(Colors.white),
+                style: h1(textColor: Colors.white),
               ),
             ),
             body: SafeArea(
@@ -76,6 +76,10 @@ class BookDetailsPageState extends State<BookDetailsPage> {
                         'Page Count: ${controller.bookDetails.value.pageCount ?? ''}'),
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       GestureDetector(
+                        onTap: () => Get.to(() => Reader(
+                            resourceLink:
+                                controller.bookDetails.value.contentLink ??
+                                    '')),
                         child: Container(
                             padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(

@@ -97,7 +97,6 @@ class ApiController extends getx.GetxController {
 
       return response;
     } catch (e) {
-      print("inside catch");
       if (e is DioError) {
         developer.log('Request Failed: ${e.response?.data ?? e.message}',
             name: _logSource, error: e);

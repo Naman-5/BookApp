@@ -46,4 +46,11 @@ router.route('/:id').get((req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));
   });
 
+router.route('/bookSearch').post((req,res)=>{
+    const searchTerm = req.body.searchTerm;
+    bookData.find({title:{'$regex': searchTerm, '$options' : 'i'}})
+    .then(books => res.json({data:books}))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;

@@ -1,3 +1,4 @@
+import 'package:bookapp/AllBooks/Views/all_books.dart';
 import 'package:bookapp/Home/Controllers/homeController.dart';
 import 'package:bookapp/Home/Views/bookDetails.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,19 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   HomePageController controller = Get.put(HomePageController());
 
+  Widget getWidget(int index) {
+    List<Widget> navBarPages = [
+      SingleChildScrollView(
+        child: Column(
+            children: List.generate(
+                controller.data.value.data?.books?.length ?? 0,
+                (index) => HorizontalBookListing(rowIndex: index))),
+      ),
+      AllBooksPage()
+    ];
+    return navBarPages.elementAt(index);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -25,18 +39,29 @@ class HomePageState extends State<HomePage> {
             body: Center(child: CircularProgressIndicator()),
           )
         : Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                    children: List.generate(
-                        controller.data.value.data?.books?.length ?? 0,
-                        (index) => HorizontalBookListing(rowIndex: index))),
-              ),
+            bottomNavigationBar: BottomNavigationBar(
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.book_sharp),
+                  label: 'All Books',
+                ),
+              ],
+              onTap: (index) {
+                controller.selectedBottomNavIndex.value = index;
+              },
+              currentIndex: controller.selectedBottomNavIndex.value,
             ),
+            body: SafeArea(
+                child: getWidget(controller.selectedBottomNavIndex.value)),
           ));
   }
 }
 
+// ignore: must_be_immutable
 class HorizontalBookListing extends StatelessWidget {
   int rowIndex;
   HomePageController controller = Get.find();
@@ -50,7 +75,7 @@ class HorizontalBookListing extends StatelessWidget {
         children: [
           Text(
             controller.data.value.data?.books?.elementAt(rowIndex).header ?? '',
-            style: h1(Colors.white),
+            style: h1(textColor: Colors.white),
           ),
           const SizedBox(
             height: 20,
@@ -68,8 +93,8 @@ class HorizontalBookListing extends StatelessWidget {
                         0,
                     (index) => GestureDetector(
                           onTap: () {
-                            // rdirect to book details
-                            Get.to(BookDetailsPage(
+                            // redirect to book details
+                            Get.to(() => BookDetailsPage(
                                 id: controller.data.value.data?.books
                                         ?.elementAt(rowIndex)
                                         .bookList
